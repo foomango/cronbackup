@@ -1,0 +1,2 @@
+# Every day at 18:00
+* 18 * * * bash /Users/fewang/src/cronbackup/mstrmac/backup.bsh
