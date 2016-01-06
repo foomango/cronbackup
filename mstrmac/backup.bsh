@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+BASE_DIR="$HOME/baiduyun/autobackup"
+
+BACKUP_DIR="$BASE_DIR/mstrmac"
+
+cp -f $HOME/.ssh/ferry.key $BACKUP_DIR/ssh/
+cp -f $HOME/.ssh/config $BACKUP_DIR/ssh/
+
+pushd $BASE_DIR
+git add .
+MESSAGE="Back up on "
+MESSAGE+=$(date)
+git commit -m"$MESSAGE"
+popd
