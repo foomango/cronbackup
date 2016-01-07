@@ -5,6 +5,8 @@ BASE_DIR="$HOME/baiduyun/autobackup"
 BACKUP_DIR="$BASE_DIR/mstrmac"
 LOGFILE="$BASE_DIR/mstrmac/log/backup.log"
 
+# Reopen stdout and stderr
+# http://www.tldp.org/LDP/abs/html/x17974.html
 exec >>$LOGFILE 2>&1
 
 echo -e "\n================================================Begin Backup================================================"
