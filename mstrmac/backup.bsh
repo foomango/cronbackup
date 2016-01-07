@@ -5,19 +5,33 @@ BASE_DIR="$HOME/baiduyun/autobackup"
 BACKUP_DIR="$BASE_DIR/mstrmac"
 LOGFILE="$BASE_DIR/mstrmac/log/backup.log"
 
+exec >/dev/null 2>&1
+
+mkdir -p $BACKUP_DIR/ssh
+cp -f $HOME/.ssh/ferry.key $BACKUP_DIR/ssh/
+cp -f $HOME/.ssh/config $BACKUP_DIR/ssh/
+
+mkdir -p $BACKUP_DIR/vim
+cp -f $HOME/.vimrc $BACKUP_DIR/vim
+
+pushd $BASE_DIR 
+git add .
+DIFF=$(git diff HEAD --name-only)
+
+# no change, exit
+if [ -z "$DIFF" ]; then
+    popd
+    exit 0
+fi
+
 # Reopen stdout and stderr
 # http://www.tldp.org/LDP/abs/html/x17974.html
 exec >>$LOGFILE 2>&1
 
 echo -e "\n================================================Begin Backup================================================"
-git diff --name-status
-cp -f $HOME/.ssh/ferry.key $BACKUP_DIR/ssh/
-cp -f $HOME/.ssh/config $BACKUP_DIR/ssh/
-
-pushd $BASE_DIR
-git add .
 MESSAGE="Back up on "
 MESSAGE+=$(date)
 git commit -m"$MESSAGE"
-popd
+git diff HEAD --name-status
+popd > /dev/null 2>&1
 echo -e "================================================End   Backup================================================\n"
